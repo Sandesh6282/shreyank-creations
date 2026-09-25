@@ -21,7 +21,7 @@ function ShopContent() {
   const [loading, setLoading] = useState(true);
 
   const [selectedCategory, setSelectedCategory] = useState<string>(categoryFromUrl);
-  const [maxPrice, setMaxPrice] = useState<number>(10000);
+  const [maxPrice, setMaxPrice] = useState<number>(1000000);
   const [sortBy, setSortBy] = useState<string>("featured");
   const [searchQuery, setSearchQuery] = useState<string>(searchFromUrl);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -79,7 +79,7 @@ function ShopContent() {
 
   const handleReset = () => {
     setSelectedCategory("all");
-    setMaxPrice(10000);
+    setMaxPrice(1000000);
     setSortBy("featured");
     setSearchQuery("");
   };
@@ -156,7 +156,7 @@ function ShopContent() {
                 Showing <strong className="text-espresso font-semibold">{displayedProducts.length}</strong> of{" "}
                 <strong className="text-espresso font-semibold">{filteredProducts.length}</strong> crafts
               </span>
-              {(selectedCategory !== "all" || searchQuery || maxPrice < 10000) && (
+              {(selectedCategory !== "all" || searchQuery || maxPrice < 1000000) && (
                 <button
                   onClick={handleReset}
                   className="text-terracotta hover:underline font-medium"
