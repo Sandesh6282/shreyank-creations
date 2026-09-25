@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { CATEGORIES } from "@/data/categories";
 import { X, Filter, RotateCcw } from "lucide-react";
 

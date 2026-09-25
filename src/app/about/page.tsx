@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
-import { Sparkles, Heart, ShieldCheck, MapPin, ArrowRight } from "lucide-react";
+import { Heart, ShieldCheck, MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export default function AboutPage() {
