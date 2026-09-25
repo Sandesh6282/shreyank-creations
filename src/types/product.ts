@@ -10,26 +10,35 @@ export interface Review {
 
 export interface Product {
   id: string;
-  slug: string;
   name: string;
+  slug: string;
+  description: string;
+  shortDescription: string;
   category: string;
   categorySlug: string;
+  categoryId?: string;
   price: number;
+  salePrice?: number;
   originalPrice?: number;
   discount?: string;
   rating: number;
   reviewCount: number;
-  shortDescription: string;
-  description: string;
-  images: string[]; // Primary image is images[0], gallery images follow
+  stock: number;
+  sku?: string;
+  images: string[];
   materials: string;
   dimensions: string;
   careInstructions: string;
   shippingInfo: string;
+  featured: boolean;
+  bestseller: boolean;
+  active: boolean;
+  createdAt: string;
+  updatedAt?: string;
+  // Aliases for compatibility
   isBestSeller?: boolean;
   isFeatured?: boolean;
-  inStock: boolean;
-  createdAt: string;
+  inStock?: boolean;
   reviews?: Review[];
 }
 
@@ -53,4 +62,26 @@ export interface FilterOptions {
   maxPrice: number;
   sortBy: "featured" | "price-low" | "price-high" | "rating" | "newest";
   searchQuery: string;
+}
+
+export interface ProductInput {
+  name: string;
+  slug?: string;
+  description: string;
+  shortDescription: string;
+  categoryId?: string;
+  categoryName: string;
+  categorySlug: string;
+  price: number;
+  salePrice?: number;
+  stock: number;
+  sku?: string;
+  images: string[];
+  materials?: string;
+  dimensions?: string;
+  careInstructions?: string;
+  shippingInfo?: string;
+  featured?: boolean;
+  bestseller?: boolean;
+  active?: boolean;
 }

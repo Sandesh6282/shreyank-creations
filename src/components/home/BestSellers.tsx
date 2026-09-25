@@ -1,9 +1,15 @@
 import React from "react";
-import { PRODUCTS } from "@/data/products";
+import { Product } from "@/types/product";
 import { ProductCard } from "@/components/product/ProductCard";
 
-export function BestSellers() {
-  const bestSellers = PRODUCTS.filter((p) => p.isBestSeller).slice(0, 4);
+interface BestSellersProps {
+  products?: Product[];
+}
+
+export function BestSellers({ products = [] }: BestSellersProps) {
+  if (products.length === 0) {
+    return null; // Don't render empty best sellers section on home page
+  }
 
   return (
     <section className="py-16 bg-cream-surface border-b border-sand/40">
@@ -21,7 +27,7 @@ export function BestSellers() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {bestSellers.map((product) => (
+          {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

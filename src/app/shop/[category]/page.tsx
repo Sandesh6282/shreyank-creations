@@ -1,5 +1,4 @@
-import { PRODUCTS } from "@/data/products";
-import { CATEGORIES } from "@/data/categories";
+import { fetchStorefrontProducts, fetchDatabaseCategories } from "@/services/productService";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { notFound } from "next/navigation";
@@ -12,15 +11,18 @@ interface CategoryPageProps {
   }>;
 }
 
+export const revalidate = 60;
+
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: categorySlug } = await params;
-  const categoryInfo = CATEGORIES.find((c) => c.slug === categorySlug);
+  const categories = await fetchDatabaseCategories();
+  const categoryInfo = categories.find((c) => c.slug === categorySlug);
 
-  if (!categoryInfo) {
+  if (!categoryInfo && categorySlug !== "all") {
     notFound();
   }
 
-  const categoryProducts = PRODUCTS.filter((p) => p.categorySlug === categorySlug);
+  const categoryProducts = await fetchStorefrontProducts({ categorySlug });
 
   return (
     <div className="bg-cream min-h-screen py-8">
@@ -28,7 +30,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <Breadcrumbs
           items={[
             { label: "Shop", href: "/shop" },
-            { label: categoryInfo.name },
+            { label: categoryInfo ? categoryInfo.name : categorySlug },
           ]}
         />
 
@@ -38,10 +40,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               Category Collection
             </span>
             <h1 className="font-serif text-3xl sm:text-4xl font-bold text-espresso">
-              {categoryInfo.name}
+              {categoryInfo ? categoryInfo.name : categorySlug}
             </h1>
             <p className="text-sm text-taupe mt-1 max-w-2xl">
-              {categoryInfo.description}
+              {categoryInfo ? categoryInfo.description : "Crafts in this category."}
             </p>
           </div>
 
@@ -54,7 +56,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </Link>
         </div>
 
-        <ProductGrid products={categoryProducts} />
+        <ProductGrid
+          products={categoryProducts}
+          emptyMessage="No active products found in this category database yet. Add items in Admin Dashboard."
+        />
       </div>
     </div>
   );

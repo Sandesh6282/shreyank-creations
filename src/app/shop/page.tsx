@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useMemo, Suspense } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { PRODUCTS } from "@/data/products";
-import { CATEGORIES } from "@/data/categories";
+import { fetchStorefrontProducts, fetchDatabaseCategories } from "@/services/productService";
+import { Product, Category } from "@/types/product";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { FilterSidebar } from "@/components/shop/FilterSidebar";
 import { SortSelect } from "@/components/shop/SortSelect";
@@ -16,6 +16,10 @@ function ShopContent() {
   const searchFromUrl = searchParams.get("search") || "";
   const categoryFromUrl = searchParams.get("category") || "all";
 
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const [selectedCategory, setSelectedCategory] = useState<string>(categoryFromUrl);
   const [maxPrice, setMaxPrice] = useState<number>(10000);
   const [sortBy, setSortBy] = useState<string>("featured");
@@ -23,23 +27,39 @@ function ShopContent() {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(8);
 
+  useEffect(() => {
+    async function loadData() {
+      setLoading(true);
+      try {
+        const [dbProducts, dbCategories] = await Promise.all([
+          fetchStorefrontProducts(),
+          fetchDatabaseCategories(),
+        ]);
+        setProducts(dbProducts);
+        setCategories(dbCategories);
+      } catch (e) {
+        console.error("Failed to load shop products:", e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((p) => {
-      // Category filter
+    return products.filter((p) => {
       if (selectedCategory && selectedCategory !== "all") {
         if (p.categorySlug !== selectedCategory) return false;
       }
 
-      // Price filter
       if (p.price > maxPrice) return false;
 
-      // Search query filter
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase().trim();
         const matchesName = p.name.toLowerCase().includes(query);
         const matchesCategory = p.category.toLowerCase().includes(query);
         const matchesDesc = p.shortDescription.toLowerCase().includes(query);
-        const matchesMaterial = p.materials.toLowerCase().includes(query);
+        const matchesMaterial = (p.materials || "").toLowerCase().includes(query);
         if (!matchesName && !matchesCategory && !matchesDesc && !matchesMaterial) {
           return false;
         }
@@ -51,9 +71,9 @@ function ShopContent() {
       if (sortBy === "price-high") return b.price - a.price;
       if (sortBy === "rating") return b.rating - a.rating;
       if (sortBy === "newest") return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      return (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0);
+      return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
     });
-  }, [selectedCategory, maxPrice, sortBy, searchQuery]);
+  }, [products, selectedCategory, maxPrice, sortBy, searchQuery]);
 
   const displayedProducts = filteredProducts.slice(0, visibleCount);
 
@@ -67,7 +87,7 @@ function ShopContent() {
   const currentCategoryName =
     selectedCategory === "all"
       ? "All Collections"
-      : CATEGORIES.find((c) => c.slug === selectedCategory)?.name || "All Collections";
+      : categories.find((c) => c.slug === selectedCategory)?.name || "All Collections";
 
   return (
     <div className="bg-cream min-h-screen py-8">
@@ -86,7 +106,6 @@ function ShopContent() {
 
         {/* Filter / Search Bar Row */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          {/* Search Input Box */}
           <div className="relative flex-1 max-w-md">
             <input
               type="text"
@@ -107,7 +126,6 @@ function ShopContent() {
           </div>
 
           <div className="flex items-center justify-between md:justify-end gap-4">
-            {/* Mobile Filter Button */}
             <button
               onClick={() => setIsMobileFilterOpen(true)}
               className="lg:hidden inline-flex items-center gap-2 px-4 py-2 bg-cream-surface border border-sand rounded-lg text-xs font-semibold text-espresso"
@@ -116,7 +134,6 @@ function ShopContent() {
               <span>Filter Crafts</span>
             </button>
 
-            {/* Sort Select */}
             <SortSelect value={sortBy} onChange={setSortBy} />
           </div>
         </div>
@@ -134,7 +151,6 @@ function ShopContent() {
           />
 
           <div className="flex-1 space-y-6">
-            {/* Product Count Header */}
             <div className="flex items-center justify-between text-xs text-taupe pb-2 border-b border-sand/30">
               <span>
                 Showing <strong className="text-espresso font-semibold">{displayedProducts.length}</strong> of{" "}
@@ -150,10 +166,15 @@ function ShopContent() {
               )}
             </div>
 
-            {/* Product Grid */}
-            <ProductGrid products={displayedProducts} />
+            {loading ? (
+              <div className="py-16 text-center text-taupe text-sm">Loading products from database...</div>
+            ) : (
+              <ProductGrid
+                products={displayedProducts}
+                emptyMessage="No products found in database matching your criteria. Add products via the Admin Portal."
+              />
+            )}
 
-            {/* Load More Button */}
             {visibleCount < filteredProducts.length && (
               <div className="pt-8 text-center">
                 <Button

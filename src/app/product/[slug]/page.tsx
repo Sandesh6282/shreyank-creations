@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, use } from "react";
+import React, { useState, useEffect, use } from "react";
 import { notFound, useRouter } from "next/navigation";
-import { PRODUCTS } from "@/data/products";
+import { fetchStorefrontProductBySlug, fetchStorefrontProducts } from "@/services/productService";
+import { Product } from "@/types/product";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -29,7 +30,9 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { addToast } = useToast();
 
-  const product = PRODUCTS.find((p) => p.slug === slug);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [quantity, setQuantity] = useState(1);
   const [newReviewTitle, setNewReviewTitle] = useState("");
@@ -37,6 +40,29 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
   const [newReviewName, setNewReviewName] = useState("");
   const [newReviewRating, setNewReviewRating] = useState(5);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
+
+  useEffect(() => {
+    async function loadProductData() {
+      setLoading(true);
+      try {
+        const [prod, list] = await Promise.all([
+          fetchStorefrontProductBySlug(slug),
+          fetchStorefrontProducts(),
+        ]);
+        setProduct(prod);
+        setAllProducts(list);
+      } catch (e) {
+        console.error("Failed to load product by slug:", e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadProductData();
+  }, [slug]);
+
+  if (loading) {
+    return <div className="py-24 text-center text-taupe">Loading product details...</div>;
+  }
 
   if (!product) {
     notFound();
@@ -80,7 +106,7 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="terracotta">{product.category}</Badge>
-                {product.isBestSeller && <Badge variant="sage">Best Seller</Badge>}
+                {product.bestseller && <Badge variant="sage">Best Seller</Badge>}
               </div>
 
               <h1 className="font-serif text-2xl sm:text-3xl font-bold text-espresso leading-tight mb-2">
@@ -90,7 +116,9 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
               {/* Rating */}
               <div className="flex items-center gap-3">
                 <ReviewStars rating={product.rating} reviewCount={product.reviewCount} size="md" />
-                <span className="text-xs text-taupe font-medium">| In Stock & Ready to Dispatch</span>
+                <span className="text-xs text-taupe font-medium">
+                  | {product.stock > 0 ? `In Stock (${product.stock})` : "Out of Stock"}
+                </span>
               </div>
             </div>
 
@@ -149,9 +177,10 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
                   variant="primary"
                   size="lg"
                   className="flex-1 gap-2 shadow-md"
+                  disabled={product.stock === 0}
                 >
                   <ShoppingBag className="w-5 h-5" />
-                  <span>Add to Cart</span>
+                  <span>{product.stock === 0 ? "Out of Stock" : "Add to Cart"}</span>
                 </Button>
 
                 <Button
@@ -159,6 +188,7 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
                   variant="sage"
                   size="lg"
                   className="flex-1"
+                  disabled={product.stock === 0}
                 >
                   Buy Now
                 </Button>
@@ -177,11 +207,11 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
               </div>
             </div>
 
-            {/* Factual Highlights Box */}
+            {/* Highlights Box */}
             <div className="space-y-2.5 pt-4 text-xs text-taupe border-t border-sand/40">
               <div className="flex items-center gap-2.5">
                 <Truck className="w-4 h-4 text-terracotta shrink-0" />
-                <span>Complimentary Pan-India shipping on orders over ₹1,999</span>
+                <span>Shipping details will be confirmed during checkout</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <ShieldCheck className="w-4 h-4 text-sage shrink-0" />
@@ -199,7 +229,7 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
             <div>
               <span className="text-xs font-semibold text-terracotta uppercase tracking-widest block mb-1">
-                Customer Testimonials
+                Customer Feedback
               </span>
               <h2 className="font-serif text-2xl md:text-3xl font-bold text-espresso">
                 Verified Reviews ({product.reviewCount})
@@ -232,7 +262,7 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
                 ))
               ) : (
                 <p className="text-sm text-taupe italic">
-                  Be the first to share your thoughts on this handmade creation!
+                  Be the first to share your thoughts on this craft creation!
                 </p>
               )}
             </div>
@@ -285,7 +315,7 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Absolutely beautiful craftsmanship!"
+                      placeholder="e.g. Beautiful craftsmanship!"
                       value={newReviewTitle}
                       onChange={(e) => setNewReviewTitle(e.target.value)}
                       className="w-full px-3 py-2 bg-cream border border-sand rounded-lg text-espresso focus:outline-none focus:border-terracotta"
@@ -314,7 +344,9 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
         </div>
 
         {/* Related Products */}
-        <RelatedProducts currentProduct={product} allProducts={PRODUCTS} />
+        {allProducts.length > 0 && (
+          <RelatedProducts currentProduct={product} allProducts={allProducts} />
+        )}
       </div>
     </div>
   );
