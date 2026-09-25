@@ -2,11 +2,28 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { LayoutDashboard, PlusCircle, ArrowLeft } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase/client";
+import { useToast } from "@/context/ToastContext";
+import { LayoutDashboard, PlusCircle, ArrowLeft, LogOut } from "lucide-react";
 
 export function AdminNav() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { addToast } = useToast();
+
+  const handleLogout = async () => {
+    try {
+      if (supabase) {
+        await supabase.auth.signOut();
+      }
+      addToast("Signed out of Admin Portal");
+      router.replace("/admin/login");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Logout failed";
+      addToast(msg, "error");
+    }
+  };
 
   return (
     <header className="bg-espresso text-cream border-b border-sand/20">
@@ -49,8 +66,17 @@ export function AdminNav() {
               className="text-xs text-cream-muted hover:text-cream transition-colors flex items-center gap-1"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>View Storefront</span>
+              <span>Storefront</span>
             </Link>
+
+            <button
+              onClick={handleLogout}
+              className="text-xs text-red-300 hover:text-red-100 transition-colors flex items-center gap-1 font-medium bg-red-950/40 hover:bg-red-950/60 px-2.5 py-1.5 rounded-md border border-red-900/50"
+              title="Sign Out of Admin Portal"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Log Out</span>
+            </button>
           </nav>
         </div>
       </div>
