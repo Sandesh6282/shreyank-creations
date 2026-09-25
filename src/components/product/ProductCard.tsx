@@ -25,6 +25,10 @@ export function ProductCard({ product }: ProductCardProps) {
     product.images[0] || FALLBACK_IMAGE
   );
 
+  React.useEffect(() => {
+    setImgSrc(product.images[0] || FALLBACK_IMAGE);
+  }, [product.images]);
+
   const isSaved = isInWishlist(product.id);
   const hoverImage = product.images[1] || imgSrc;
 
