@@ -13,7 +13,7 @@ export function AnnouncementBar() {
       <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-center">
         <Sparkles className="w-3.5 h-3.5 text-terracotta shrink-0 animate-pulse" />
         <span>
-          <strong className="text-cream font-medium">Shreyank Creations</strong> | Thoughtfully Selected Handmade Crafts & Home Decor
+          <strong className="text-cream font-medium">SHREYANK CREATION</strong> | Handmade Bags, Pouches & Custom Creations • Delivery Available Across India
         </span>
       </div>
       <button

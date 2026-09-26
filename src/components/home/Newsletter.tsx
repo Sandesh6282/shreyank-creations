@@ -25,16 +25,16 @@ export function Newsletter() {
           </div>
 
           <h2 className="font-serif text-3xl font-bold text-espresso mb-2">
-            Join Our Craft Club
+            Stay Connected With Us
           </h2>
           <p className="text-sm text-taupe max-w-lg mx-auto mb-6">
-            Subscribe to receive updates on new handmade releases, artisan stories, and exclusive preview collections.
+            Subscribe to receive updates on new handmade fabric creations, custom design announcements, and special studio previews.
           </p>
 
           {isSubmitted ? (
             <div className="inline-flex items-center gap-2 p-4 bg-sage/10 text-sage rounded-xl border border-sage/20 font-medium text-sm">
               <CheckCircle2 className="w-5 h-5" />
-              <span>Thank you for subscribing to Shreyank Creations!</span>
+              <span>Thank you for subscribing to SHREYANK CREATION!</span>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">

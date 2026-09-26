@@ -1,27 +1,27 @@
 import React from "react";
-import { Sparkles, Heart, PackageCheck, Home } from "lucide-react";
+import { Heart, Sparkles, Truck, MessageSquare } from "lucide-react";
 
 export function WhyChooseUs() {
   const pillars = [
     {
       icon: Heart,
-      title: "Made with Care",
-      description: "Each item is individually crafted by artisan hands with organic nuance and character.",
+      title: "Handmade Craftsmanship",
+      description: "Each bag, pouch, and accessory is crafted by hand with attention to detail and care.",
     },
     {
       icon: Sparkles,
-      title: "Unique Handmade Pieces",
-      description: "No two items are identical. Your decor piece carries distinct traditional identity.",
+      title: "Customized Creations",
+      description: "Have a specific design in mind? Discuss custom orders directly with us on WhatsApp.",
     },
     {
-      icon: PackageCheck,
-      title: "Thoughtfully Selected",
-      description: "Carefully curated materials from quartz blue pottery to solid teakwood and brass.",
+      icon: Truck,
+      title: "Delivery Across India",
+      description: "Simple and reliable doorstep delivery across all regions in India.",
     },
     {
-      icon: Home,
-      title: "Crafted for Your Home",
-      description: "Earthy, aesthetic decor designed to infuse warmth and heritage into modern living spaces.",
+      icon: MessageSquare,
+      title: "Direct WhatsApp Ordering",
+      description: "Instant 1-on-1 customer assistance and order enquiries directly via WhatsApp.",
     },
   ];
 
@@ -30,10 +30,10 @@ export function WhyChooseUs() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-xs font-semibold text-terracotta uppercase tracking-widest block mb-1">
-            Our Ethos
+            Our Promise
           </span>
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-espresso">
-            Why Choose Shreyank Creations
+            Why Choose SHREYANK CREATION
           </h2>
         </div>
 

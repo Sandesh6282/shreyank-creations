@@ -59,49 +59,59 @@ export async function fetchStorefrontProducts(filters?: {
     return [];
   }
 
-  let query = supabase.from("products").select("*").eq("active", true);
+  try {
+    let query = supabase.from("products").select("*").eq("active", true);
 
-  if (filters?.categorySlug && filters.categorySlug !== "all") {
-    query = query.eq("category_slug", filters.categorySlug);
-  }
+    if (filters?.categorySlug && filters.categorySlug !== "all") {
+      query = query.eq("category_slug", filters.categorySlug);
+    }
 
-  if (filters?.featuredOnly) {
-    query = query.eq("featured", true);
-  }
+    if (filters?.featuredOnly) {
+      query = query.eq("featured", true);
+    }
 
-  if (filters?.bestsellerOnly) {
-    query = query.eq("bestseller", true);
-  }
+    if (filters?.bestsellerOnly) {
+      query = query.eq("bestseller", true);
+    }
 
-  if (filters?.maxPrice) {
-    query = query.lte("price", filters.maxPrice);
-  }
+    if (filters?.maxPrice) {
+      query = query.lte("price", filters.maxPrice);
+    }
 
-  if (filters?.searchQuery) {
-    const term = `%${filters.searchQuery.trim()}%`;
-    query = query.or(
-      `name.ilike.${term},description.ilike.${term},category_name.ilike.${term},materials.ilike.${term}`
-    );
-  }
+    if (filters?.searchQuery) {
+      const term = `%${filters.searchQuery.trim()}%`;
+      query = query.or(
+        `name.ilike.${term},description.ilike.${term},category_name.ilike.${term},materials.ilike.${term}`
+      );
+    }
 
-  if (filters?.sortBy === "price-low") {
-    query = query.order("price", { ascending: true });
-  } else if (filters?.sortBy === "price-high") {
-    query = query.order("price", { ascending: false });
-  } else if (filters?.sortBy === "newest") {
-    query = query.order("created_at", { ascending: false });
-  } else {
-    query = query.order("created_at", { ascending: false });
-  }
+    if (filters?.sortBy === "price-low") {
+      query = query.order("price", { ascending: true });
+    } else if (filters?.sortBy === "price-high") {
+      query = query.order("price", { ascending: false });
+    } else if (filters?.sortBy === "newest") {
+      query = query.order("created_at", { ascending: false });
+    } else {
+      query = query.order("created_at", { ascending: false });
+    }
 
-  const { data, error } = await query;
+    const { data, error } = await query;
 
-  if (error) {
-    console.error("Error fetching products from Supabase:", error);
+    if (error) {
+      const errorDetails = error.message || error.details || (typeof error === "object" ? JSON.stringify(error) : String(error));
+      if (process.env.NODE_ENV === "development" && errorDetails && errorDetails !== "{}") {
+        console.warn("Supabase products fetch notice:", errorDetails);
+      }
+      return [];
+    }
+
+    return (data || []).map(mapDbToProduct);
+  } catch (err) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Supabase fetch exception:", err instanceof Error ? err.message : String(err));
+    }
     return [];
   }
-
-  return (data || []).map(mapDbToProduct);
 }
 
 export async function fetchStorefrontProductBySlug(slug: string): Promise<Product | null> {
@@ -109,18 +119,22 @@ export async function fetchStorefrontProductBySlug(slug: string): Promise<Produc
     return null;
   }
 
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("slug", slug)
-    .eq("active", true)
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("slug", slug)
+      .eq("active", true)
+      .maybeSingle();
 
-  if (error || !data) {
+    if (error || !data) {
+      return null;
+    }
+
+    return mapDbToProduct(data);
+  } catch {
     return null;
   }
-
-  return mapDbToProduct(data);
 }
 
 // Admin Management CRUD Functions
@@ -129,17 +143,27 @@ export async function fetchAdminProducts(): Promise<Product[]> {
     return [];
   }
 
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .order("created_at", { ascending: false });
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-  if (error) {
-    console.error("Error fetching admin products:", error);
+    if (error) {
+      const errorDetails = error.message || error.details || (typeof error === "object" ? JSON.stringify(error) : String(error));
+      if (process.env.NODE_ENV === "development" && errorDetails && errorDetails !== "{}") {
+        console.warn("Supabase admin fetch notice:", errorDetails);
+      }
+      return [];
+    }
+
+    return (data || []).map(mapDbToProduct);
+  } catch (err) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Supabase admin fetch exception:", err instanceof Error ? err.message : String(err));
+    }
     return [];
   }
-
-  return (data || []).map(mapDbToProduct);
 }
 
 export async function createProduct(input: ProductInput): Promise<Product> {

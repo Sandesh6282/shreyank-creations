@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/Button";
 import { buildSingleProductWhatsAppUrl } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { Badge } from "@/components/ui/Badge";
-import { Heart, ShoppingBag, Truck, ShieldCheck, Plus, Minus, Star, CheckCircle } from "lucide-react";
+import { Heart, ShoppingBag, Truck, ShieldCheck, Plus, Minus, Star, CheckCircle, Sparkles } from "lucide-react";
 import { useToast } from "@/context/ToastContext";
 
 interface ProductPageProps {
@@ -213,15 +213,35 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
               </div>
             </div>
 
+            {/* Customization Callout Box */}
+            <div className="p-4 rounded-xl bg-terracotta/10 border border-terracotta/20 space-y-2">
+              <div className="flex items-center gap-2 text-terracotta font-serif font-bold text-sm">
+                <Sparkles className="w-4 h-4" />
+                <span>Customization Available</span>
+              </div>
+              <p className="text-xs text-taupe leading-relaxed">
+                Want a custom version or personalized requirements for this item? Discuss your custom order directly with us on WhatsApp.
+              </p>
+              <a
+                href={`https://wa.me/918951119766?text=Hi%20SHREYANK%20CREATION%2C%20I%27d%20like%20to%20discuss%20customization%20for%20${encodeURIComponent(product.name)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-espresso hover:text-terracotta transition-colors pt-1"
+              >
+                <WhatsAppIcon className="w-3.5 h-3.5 fill-[#25D366]" />
+                <span className="text-[#25D366] font-bold">Discuss Customization on WhatsApp &rarr;</span>
+              </a>
+            </div>
+
             {/* Highlights Box */}
             <div className="space-y-2.5 pt-4 text-xs text-taupe border-t border-sand/40">
               <div className="flex items-center gap-2.5">
                 <Truck className="w-4 h-4 text-terracotta shrink-0" />
-                <span>Shipping details will be confirmed during checkout</span>
+                <span>Delivery Available Across India</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <ShieldCheck className="w-4 h-4 text-sage shrink-0" />
-                <span>Protected multi-layer packaging for fragile ceramics & brass</span>
+                <span>Handcrafted by hand with care & premium finishing</span>
               </div>
             </div>
           </div>

@@ -39,8 +39,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: ["var(--font-serif)", "Playfair Display", "Georgia", "serif"],
-        sans: ["var(--font-sans)", "Plus Jakarta Sans", "system-ui", "sans-serif"],
+        serif: ["Outfit", "var(--font-serif)", "Georgia", "serif"],
+        sans: ["Plus Jakarta Sans", "var(--font-sans)", "system-ui", "sans-serif"],
       },
       boxShadow: {
         artisan: "0 4px 20px -2px rgba(44, 26, 20, 0.06)",

@@ -73,7 +73,7 @@ export default function AdminLoginPage() {
             <span>Back to Storefront</span>
           </Link>
           <span className="text-xs font-bold text-taupe uppercase tracking-wider">
-            Shreyank Creations
+            SHREYANK CREATION
           </span>
         </div>
 

@@ -227,11 +227,11 @@ function CheckoutContent() {
               <div className="space-y-2 pt-2 text-[11px] text-taupe border-t border-sand/40">
                 <div className="flex items-center gap-2">
                   <MessageSquare className="w-3.5 h-3.5 text-sage shrink-0" />
-                  <span>Direct 1-on-1 chat with Shreyank Creations seller</span>
+                  <span>Direct 1-on-1 chat with SHREYANK CREATION seller</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Truck className="w-3.5 h-3.5 text-terracotta shrink-0" />
-                  <span>Insured ceramic & brass artisan packaging</span>
+                  <span>Delivery Available Across India</span>
                 </div>
               </div>
             </div>

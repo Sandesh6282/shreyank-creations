@@ -73,7 +73,7 @@ export default function SignupPage() {
         <div className="max-w-md mx-auto my-8 bg-cream-surface rounded-2xl border border-sand/60 p-8 shadow-card">
           <div className="text-center mb-8">
             <h1 className="font-serif text-3xl font-bold text-espresso mb-1">Create Account</h1>
-            <p className="text-xs text-taupe">Join Shreyank Creations for craft updates and order tracking</p>
+            <p className="text-xs text-taupe">Join SHREYANK CREATION for updates and saved wishlist</p>
           </div>
 
           {errorMsg && (

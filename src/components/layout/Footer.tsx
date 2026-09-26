@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Mail, Phone, MapPin, Heart, ShieldCheck, Truck } from "lucide-react";
+import { MessageSquare, Heart, ShieldCheck, Truck } from "lucide-react";
 import { CATEGORIES } from "@/data/categories";
 
 export function Footer() {
@@ -14,9 +14,9 @@ export function Footer() {
               <Heart className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="font-serif text-cream font-medium text-base">Made with Care</h4>
+              <h4 className="font-serif text-cream font-medium text-base">Handmade Craftsmanship</h4>
               <p className="text-xs text-taupe-muted mt-0.5">
-                Every piece is individually handcrafted by skilled artisans.
+                Every bag, pouch, and accessory is crafted by hand with care.
               </p>
             </div>
           </div>
@@ -26,9 +26,9 @@ export function Footer() {
               <Truck className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="font-serif text-cream font-medium text-base">Protected Transit Packaging</h4>
+              <h4 className="font-serif text-cream font-medium text-base">Delivery Across India</h4>
               <p className="text-xs text-taupe-muted mt-0.5">
-                Multi-layered protective packaging for safe handling.
+                Simple and reliable doorstep delivery across India.
               </p>
             </div>
           </div>
@@ -38,9 +38,9 @@ export function Footer() {
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="font-serif text-cream font-medium text-base">Unique Handmade Pieces</h4>
+              <h4 className="font-serif text-cream font-medium text-base">Custom Creations</h4>
               <p className="text-xs text-taupe-muted mt-0.5">
-                Distinctive crafts that bring warmth to your living space.
+                Discuss custom designs and personalized orders directly on WhatsApp.
               </p>
             </div>
           </div>
@@ -52,29 +52,30 @@ export function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="inline-block">
               <span className="font-serif text-2xl font-bold text-cream tracking-wide">
-                Shreyank Creations
+                SHREYANK CREATION
               </span>
-              <span className="block text-[10px] tracking-[0.25em] uppercase text-terracotta mt-0.5 font-medium">
-                Handmade & Artisan Crafts
+              <span className="block text-[10px] tracking-[0.2em] uppercase text-terracotta mt-0.5 font-semibold">
+                Handmade Fabric & Custom Creations
               </span>
             </Link>
             <p className="text-sm text-taupe-muted leading-relaxed max-w-md">
-              Shreyank Creations brings together Indian handicrafts, home decor, folk art, and traditional decorative items created by artisan hands.
+              SHREYANK CREATION brings you handmade fabric bags, utility pouches, organizers, bookmarks, and bespoke custom accessories crafted with creativity and care.
             </p>
             <div className="space-y-2 pt-2 text-xs">
               <div className="flex items-center gap-2 text-cream-muted">
-                <MapPin className="w-4 h-4 text-terracotta shrink-0" />
-                <span>Studios in Jaipur & Bengaluru, India</span>
+                <Truck className="w-4 h-4 text-terracotta shrink-0" />
+                <span>Delivery Available Across India</span>
               </div>
               <div className="flex items-center gap-2 text-cream-muted">
-                <Mail className="w-4 h-4 text-terracotta shrink-0" />
-                <a href="mailto:support@shreyankcreations.com" className="hover:text-cream transition-colors">
-                  support@shreyankcreations.com
+                <MessageSquare className="w-4 h-4 text-[#25D366] shrink-0" />
+                <a
+                  href="https://wa.me/918951119766"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-cream transition-colors font-medium text-[#25D366]"
+                >
+                  Order & Enquire on WhatsApp (+91 89511 19766)
                 </a>
-              </div>
-              <div className="flex items-center gap-2 text-cream-muted">
-                <Phone className="w-4 h-4 text-terracotta shrink-0" />
-                <span>+91 98765 43210</span>
               </div>
             </div>
           </div>
@@ -101,18 +102,18 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <a
+                  href="https://wa.me/918951119766?text=Hi%20SHREYANK%20CREATION%2C%20I%27d%20like%20to%20discuss%20a%20custom%20order."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-terracotta transition-colors"
+                >
+                  Custom Orders
+                </a>
+              </li>
+              <li>
                 <Link href="/contact" className="hover:text-terracotta transition-colors">
                   Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/cart" className="hover:text-terracotta transition-colors">
-                  Shopping Cart
-                </Link>
-              </li>
-              <li>
-                <Link href="/wishlist" className="hover:text-terracotta transition-colors">
-                  Saved Wishlist
                 </Link>
               </li>
             </ul>
@@ -137,25 +138,25 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Customer Service / Care Column */}
+          {/* Customer Service Column */}
           <div>
             <h4 className="font-serif text-cream text-base font-semibold mb-4 tracking-wide">
-              Customer Support
+              Customer Care
             </h4>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link href="/contact#faq" className="hover:text-terracotta transition-colors">
-                  FAQs & Inquiries
+                  FAQs & Enquiries
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-terracotta transition-colors">
-                  Shipping Information
+                <Link href="/cart" className="hover:text-terracotta transition-colors">
+                  Shopping Cart
                 </Link>
               </li>
               <li>
-                <Link href="/login" className="hover:text-terracotta transition-colors">
-                  My Account
+                <Link href="/wishlist" className="hover:text-terracotta transition-colors">
+                  Saved Wishlist
                 </Link>
               </li>
             </ul>
@@ -164,10 +165,10 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-taupe-muted gap-4">
-          <p>© {new Date().getFullYear()} Shreyank Creations. All rights reserved. Crafted for your home.</p>
+          <p>© {new Date().getFullYear()} SHREYANK CREATION. All rights reserved. Made with creativity & care.</p>
           <div className="flex items-center gap-6">
-            <span className="hover:text-cream cursor-pointer transition-colors">Privacy Policy</span>
-            <span className="hover:text-cream cursor-pointer transition-colors">Terms of Service</span>
+            <span className="hover:text-cream cursor-pointer transition-colors">Delivery Across India</span>
+            <span className="hover:text-cream cursor-pointer transition-colors">WhatsApp Order Support</span>
           </div>
         </div>
       </div>

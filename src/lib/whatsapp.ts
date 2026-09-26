@@ -77,7 +77,7 @@ export function buildSingleProductWhatsAppUrl({
   const productUrl = getProductUrl(product, origin);
   const displayPrice = product.salePrice ?? product.price;
 
-  const message = `Hi Shreyank Creations, I'm interested in purchasing:
+  const message = `Hi SHREYANK CREATION, I'm interested in purchasing:
 
 Product: ${product.name}
 Price: ${formatPrice(displayPrice)}
@@ -105,7 +105,7 @@ export function buildCartWhatsAppUrl({
   origin?: string;
 }): string {
   if (cartItems.length === 0) {
-    const emptyMsg = `Hi Shreyank Creations, I'd like to enquire about your handicraft collection.`;
+    const emptyMsg = `Hi SHREYANK CREATION, I'd like to enquire about your handmade fabric collection.`;
     return buildWhatsAppUrl(emptyMsg);
   }
 
@@ -126,7 +126,7 @@ export function buildCartWhatsAppUrl({
    Product: ${itemUrl}\n\n`;
   });
 
-  const message = `Hi Shreyank Creations, I'd like to enquire about these products:
+  const message = `Hi SHREYANK CREATION, I'd like to enquire about these products:
 
 ${itemsSummary.trim()}
 
@@ -177,7 +177,7 @@ Phone: ${address.phone}
 Address: ${address.addressLine1}${address.addressLine2 ? `, ${address.addressLine2}` : ""}, ${address.city}, ${address.state} - ${address.postalCode}`;
   }
 
-  const message = `Hi Shreyank Creations, I'd like to place an order enquiry for the following items:
+  const message = `Hi SHREYANK CREATION, I'd like to place an order enquiry for the following items:
 
 ${itemsSummary.trim()}
 

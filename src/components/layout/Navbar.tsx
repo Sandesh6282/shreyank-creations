@@ -86,6 +86,7 @@ export function Navbar() {
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },
     { name: "About", href: "/about" },
+    { name: "Custom Orders", href: "https://wa.me/918951119766?text=Hi%20SHREYANK%20CREATION%2C%20I%27d%20like%20to%20discuss%20a%20custom%20order." },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -119,11 +120,11 @@ export function Navbar() {
 
           {/* Logo / Brand Name */}
           <Link href="/" className="flex flex-col items-center lg:items-start group">
-            <span className="font-serif text-2xl md:text-3xl font-semibold tracking-wide text-espresso group-hover:text-terracotta transition-colors">
-              Shreyank Creations
+            <span className="font-serif text-2xl md:text-3xl font-bold tracking-wide text-espresso group-hover:text-terracotta transition-colors">
+              SHREYANK CREATION
             </span>
-            <span className="text-[10px] tracking-[0.25em] uppercase text-taupe font-sans font-medium -mt-1">
-              Handmade & Artisan Crafts
+            <span className="text-[10px] tracking-[0.2em] uppercase text-terracotta font-sans font-semibold -mt-1">
+              Handmade & Custom Creations
             </span>
           </Link>
 
@@ -246,8 +247,8 @@ export function Navbar() {
           <div className="relative w-4/5 max-w-sm bg-cream-surface h-full shadow-2xl flex flex-col z-10 overflow-y-auto">
             <div className="p-5 border-b border-sand flex items-center justify-between">
               <div>
-                <h2 className="font-serif text-xl text-espresso font-semibold">Shreyank Creations</h2>
-                <p className="text-xs text-taupe">Artisan Handmade Crafts</p>
+                <h2 className="font-serif text-xl text-espresso font-bold">SHREYANK CREATION</h2>
+                <p className="text-xs text-terracotta font-medium">Handmade Fabric & Custom Creations</p>
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}

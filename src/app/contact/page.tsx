@@ -58,9 +58,9 @@ export default function ContactPage() {
                   <div>
                     <h4 className="font-bold text-espresso">Studio Address</h4>
                     <p className="text-xs text-taupe mt-0.5 leading-relaxed">
-                      Shreyank Creations Studio<br />
-                      Craft Village, Civil Lines<br />
-                      Jaipur, Rajasthan 302006, India
+                      SHREYANK CREATION<br />
+                      Handmade Fabric & Custom Creations<br />
+                      Delivery Available Across India
                     </p>
                   </div>
                 </div>
@@ -85,8 +85,8 @@ export default function ContactPage() {
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-espresso">Phone Support</h4>
-                    <p className="text-xs text-taupe mt-0.5">+91 98765 43210</p>
+                    <h4 className="font-bold text-espresso">WhatsApp Order & Inquiries</h4>
+                    <p className="text-xs text-taupe mt-0.5">+91 89511 19766</p>
                   </div>
                 </div>
 
@@ -117,7 +117,7 @@ export default function ContactPage() {
                   <CheckCircle2 className="w-10 h-10 mx-auto text-sage" />
                   <h4 className="font-serif font-bold text-lg text-espresso">Message Received!</h4>
                   <p className="text-xs text-taupe">
-                    Thank you for reaching out to Shreyank Creations. Our craft team will respond within 24 hours.
+                    Thank you for reaching out to SHREYANK CREATION. Our craft team will respond promptly.
                   </p>
                 </div>
               ) : (

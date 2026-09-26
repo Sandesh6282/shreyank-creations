@@ -77,7 +77,7 @@ export function CartSummary() {
         </div>
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-sage shrink-0" />
-          <span>Protected multi-layer packaging for fragile items</span>
+          <span>Handcrafted with care & delivered across India</span>
         </div>
       </div>
     </div>

@@ -33,7 +33,7 @@ export function AdminNav() {
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-2 group">
               <span className="font-serif text-xl font-bold tracking-wide text-cream group-hover:text-terracotta transition-colors">
-                Shreyank Creations
+                SHREYANK CREATION
               </span>
             </Link>
             <span className="bg-terracotta/20 text-terracotta border border-terracotta/30 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">

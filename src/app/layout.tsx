@@ -8,14 +8,14 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "Shreyank Creations | Handmade Indian Handicrafts, Decor & Art",
+  title: "SHREYANK CREATION | Handmade Bags, Pouches & Custom Creations",
   description:
-    "Explore Shreyank Creations for handmade Indian handicrafts, folk art, blue pottery, wooden jharokhas, brass urlis, and unique home decor crafted with care.",
+    "Discover SHREYANK CREATION for handmade fabric bags, utility pouches, organizers, bookmarks, and customized creations. Made with care and delivered across India.",
   openGraph: {
-    title: "Shreyank Creations | Handmade Indian Handicrafts & Decor",
+    title: "SHREYANK CREATION | Handmade Bags, Pouches & Custom Accessories",
     description:
-      "Timeless Indian handmade crafts, decor, gifts, and folk paintings created by artisan hands.",
-    siteName: "Shreyank Creations",
+      "Handmade fabric bags, utility pouches, organizers, bookmarks, and bespoke custom creations ordered directly via WhatsApp.",
+    siteName: "SHREYANK CREATION",
     locale: "en_IN",
     type: "website",
   },
@@ -32,7 +32,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
