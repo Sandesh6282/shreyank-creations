@@ -28,7 +28,7 @@ export interface ShippingAddressWhatsAppInfo {
  * Strips non-digit characters to format cleanly for wa.me links.
  */
 export function getSellerWhatsAppNumber(): string {
-  const envPhone = process.env.NEXT_PUBLIC_SELLER_WHATSAPP || "919876543210";
+  const envPhone = process.env.NEXT_PUBLIC_SELLER_WHATSAPP || "918951119766";
   return envPhone.replace(/\D/g, "");
 }
 
