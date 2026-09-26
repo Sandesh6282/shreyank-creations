@@ -1,101 +1,83 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/utils";
-import { Button } from "@/components/ui/Button";
-import { ShieldCheck, Truck, Tag, ArrowRight } from "lucide-react";
-import { useToast } from "@/context/ToastContext";
+import { ShieldCheck, Truck, RefreshCw } from "lucide-react";
+import { buildCartWhatsAppUrl } from "@/lib/whatsapp";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
 export function CartSummary() {
-  const { subtotal, totalAmount, cartItems } = useCart();
-  const { addToast } = useToast();
-  const [couponCode, setCouponCode] = useState("");
-  const [appliedDiscount, setAppliedDiscount] = useState(0);
+  const { subtotal, cartItems, revalidateCart } = useCart();
 
-  const handleApplyCoupon = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (couponCode.toUpperCase() === "ARTISAN10") {
-      const discount = Math.round(subtotal * 0.1);
-      setAppliedDiscount(discount);
-      addToast("Applied 'ARTISAN10' - 10% craft discount!");
-    } else {
-      addToast("Invalid promo code. Try 'ARTISAN10'", "error");
-    }
-  };
-
-  const finalTotal = Math.max(0, totalAmount - appliedDiscount);
+  const totalItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const cartWhatsAppUrl = buildCartWhatsAppUrl({ cartItems });
 
   return (
     <div className="bg-cream-surface rounded-xl border border-sand/60 p-6 shadow-card space-y-6 sticky top-24">
       <h3 className="font-serif text-xl font-bold text-espresso border-b border-sand pb-4">
-        Order Summary
+        Enquiry Summary
       </h3>
 
       {/* Price breakdown */}
       <div className="space-y-3 text-sm">
         <div className="flex justify-between text-taupe">
-          <span>Subtotal ({cartItems.length} items)</span>
+          <span>Subtotal ({totalItemCount} items)</span>
           <span className="font-semibold text-espresso">{formatPrice(subtotal)}</span>
         </div>
 
         <div className="flex justify-between text-taupe text-xs pt-1">
-          <span>Estimated Shipping</span>
-          <span className="font-medium text-taupe italic">Calculated at checkout</span>
+          <span>Shipping Charges</span>
+          <span className="font-medium text-taupe italic">Confirmed by seller</span>
         </div>
 
-        {appliedDiscount > 0 && (
-          <div className="flex justify-between text-terracotta font-medium pt-1">
-            <span>Promo Discount (ARTISAN10)</span>
-            <span>-{formatPrice(appliedDiscount)}</span>
-          </div>
-        )}
-
         <div className="pt-3 border-t border-sand flex justify-between items-baseline">
-          <span className="font-serif text-lg font-bold text-espresso">Total</span>
+          <div>
+            <span className="font-serif text-lg font-bold text-espresso block">Estimated Total</span>
+            <span className="text-[11px] text-taupe block">Final price & shipping confirmed by seller</span>
+          </div>
           <span className="font-serif text-2xl font-bold text-terracotta">
-            {formatPrice(finalTotal)}
+            {formatPrice(subtotal)}
           </span>
         </div>
       </div>
 
-      {/* Coupon form */}
-      <form onSubmit={handleApplyCoupon} className="relative flex gap-2">
-        <div className="relative flex-1">
-          <input
-            type="text"
-            placeholder="Promo Code (e.g. ARTISAN10)"
-            value={couponCode}
-            onChange={(e) => setCouponCode(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 bg-cream border border-sand rounded-lg text-xs uppercase font-medium text-espresso focus:outline-none focus:border-terracotta"
-          />
-          <Tag className="w-3.5 h-3.5 text-taupe absolute left-3 top-1/2 -translate-y-1/2" />
-        </div>
-        <Button type="submit" variant="secondary" size="sm">
-          Apply
-        </Button>
-      </form>
-
-      {/* Checkout CTA */}
-      <Button
-        variant="primary"
-        size="lg"
-        className="w-full gap-2 shadow-md"
-        onClick={() => addToast("Checkout flow prepared! Backend integration coming soon.", "info")}
+      {/* Primary WhatsApp CTA */}
+      <a
+        href={cartItems.length > 0 ? cartWhatsAppUrl : "#"}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => {
+          if (cartItems.length === 0) e.preventDefault();
+        }}
+        className={`w-full py-3.5 px-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-md ${
+          cartItems.length > 0
+            ? "bg-[#25D366] text-white hover:bg-[#20bd5a] cursor-pointer"
+            : "bg-sand/80 text-taupe cursor-not-allowed pointer-events-none opacity-60"
+        }`}
       >
-        <span>Proceed to Checkout</span>
-        <ArrowRight className="w-4 h-4" />
-      </Button>
+        <WhatsAppIcon className="w-5 h-5 fill-white" />
+        <span>Enquire on WhatsApp</span>
+      </a>
+
+      {/* Revalidate Button */}
+      <button
+        onClick={revalidateCart}
+        className="w-full text-xs text-taupe hover:text-espresso flex items-center justify-center gap-1.5 transition-colors pt-1"
+      >
+        <RefreshCw className="w-3.5 h-3.5 text-terracotta" />
+        <span>Revalidate stock & live prices</span>
+      </button>
 
       {/* Trust Badges */}
       <div className="space-y-2 pt-2 text-xs text-taupe border-t border-sand/40">
         <div className="flex items-center gap-2">
           <Truck className="w-4 h-4 text-terracotta shrink-0" />
-          <span>Shipping details will be confirmed during checkout</span>
+          <span>Shipping charges will be confirmed by the seller.</span>
         </div>
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-sage shrink-0" />
-          <span>Protected packaging for fragile ceramics & brass</span>
+          <span>Protected multi-layer packaging for fragile items</span>
         </div>
       </div>
     </div>

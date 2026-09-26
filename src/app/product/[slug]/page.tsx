@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, use } from "react";
-import { notFound, useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
 import { fetchStorefrontProductBySlug, fetchStorefrontProducts } from "@/services/productService";
 import { Product } from "@/types/product";
 import { formatPrice } from "@/lib/utils";
@@ -13,6 +13,8 @@ import { ProductSpecs } from "@/components/product/ProductSpecs";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { ReviewStars } from "@/components/product/ReviewStars";
 import { Button } from "@/components/ui/Button";
+import { buildSingleProductWhatsAppUrl } from "@/lib/whatsapp";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { Badge } from "@/components/ui/Badge";
 import { Heart, ShoppingBag, Truck, ShieldCheck, Plus, Minus, Star, CheckCircle } from "lucide-react";
 import { useToast } from "@/context/ToastContext";
@@ -25,7 +27,6 @@ interface ProductPageProps {
 
 export default function ProductDetailPage({ params }: ProductPageProps) {
   const { slug } = use(params);
-  const router = useRouter();
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { addToast } = useToast();
@@ -69,11 +70,6 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
   }
 
   const isSaved = isInWishlist(product.id);
-
-  const handleBuyNow = () => {
-    addToCart(product, quantity);
-    router.push("/cart");
-  };
 
   const handleAddReview = (e: React.FormEvent) => {
     e.preventDefault();
@@ -162,8 +158,9 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
                     {quantity}
                   </span>
                   <button
-                    onClick={() => setQuantity((q) => q + 1)}
-                    className="p-1 text-taupe hover:text-espresso"
+                    onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
+                    className="p-1 text-taupe hover:text-espresso disabled:opacity-30 disabled:cursor-not-allowed"
+                    disabled={quantity >= product.stock}
                     aria-label="Increase quantity"
                   >
                     <Plus className="w-4 h-4" />
@@ -177,21 +174,30 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
                   variant="primary"
                   size="lg"
                   className="flex-1 gap-2 shadow-md"
-                  disabled={product.stock === 0}
+                  disabled={product.stock === 0 || !product.active}
                 >
                   <ShoppingBag className="w-5 h-5" />
                   <span>{product.stock === 0 ? "Out of Stock" : "Add to Cart"}</span>
                 </Button>
 
-                <Button
-                  onClick={handleBuyNow}
-                  variant="sage"
-                  size="lg"
-                  className="flex-1"
-                  disabled={product.stock === 0}
+                <a
+                  href={product.stock > 0 && product.active ? buildSingleProductWhatsAppUrl({ product, quantity }) : "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    if (product.stock <= 0 || !product.active) {
+                      e.preventDefault();
+                    }
+                  }}
+                  className={`flex-1 py-3 px-5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-md ${
+                    product.stock > 0 && product.active
+                      ? "bg-[#25D366] text-white hover:bg-[#20bd5a] cursor-pointer"
+                      : "bg-sand/80 text-taupe cursor-not-allowed pointer-events-none opacity-60"
+                  }`}
                 >
-                  Buy Now
-                </Button>
+                  <WhatsAppIcon className="w-5 h-5 fill-white" />
+                  <span>{product.stock === 0 || !product.active ? "Out of Stock" : "Buy on WhatsApp"}</span>
+                </a>
 
                 <button
                   onClick={() => toggleWishlist(product)}

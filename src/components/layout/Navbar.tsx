@@ -28,6 +28,32 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isCategoriesDropdownOpen, setIsCategoriesDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    async function checkUserSession() {
+      const { supabase, isSupabaseConfigured } = await import("@/lib/supabase/client");
+      if (isSupabaseConfigured && supabase) {
+        const { data: { session } } = await supabase.auth.getSession();
+        setIsLoggedIn(Boolean(session));
+      }
+    }
+    checkUserSession();
+
+    let subscription: { unsubscribe: () => void } | null = null;
+    import("@/lib/supabase/client").then(({ supabase, isSupabaseConfigured }) => {
+      if (isSupabaseConfigured && supabase) {
+        const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+          setIsLoggedIn(Boolean(session));
+        });
+        subscription = data.subscription;
+      }
+    });
+
+    return () => {
+      if (subscription) subscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -180,11 +206,14 @@ export function Navbar() {
 
             {/* Account Icon */}
             <Link
-              href="/login"
-              className="p-2 text-espresso hover:text-terracotta transition-colors"
-              aria-label="Account Login"
+              href={isLoggedIn ? "/account" : "/login"}
+              className="p-2 text-espresso hover:text-terracotta transition-colors relative"
+              aria-label={isLoggedIn ? "My Customer Account" : "Customer Login"}
             >
               <User className="w-5 h-5" />
+              {isLoggedIn && (
+                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-sage" />
+              )}
             </Link>
 
             {/* Cart Icon */}

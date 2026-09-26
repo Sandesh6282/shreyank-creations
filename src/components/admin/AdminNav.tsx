@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { useToast } from "@/context/ToastContext";
-import { LayoutDashboard, PlusCircle, ArrowLeft, LogOut } from "lucide-react";
+import { LayoutDashboard, PlusCircle, ArrowLeft, LogOut, ShoppingBag } from "lucide-react";
 
 export function AdminNav() {
   const pathname = usePathname();
@@ -51,6 +51,16 @@ export function AdminNav() {
             >
               <LayoutDashboard className="w-4 h-4" />
               <span>Products Inventory</span>
+            </Link>
+
+            <Link
+              href="/admin/orders"
+              className={`flex items-center gap-1.5 font-medium transition-colors ${
+                pathname === "/admin/orders" ? "text-terracotta font-semibold" : "text-cream-muted hover:text-cream"
+              }`}
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>Customer Orders</span>
             </Link>
 
             <Link
