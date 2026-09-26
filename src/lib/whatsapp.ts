@@ -86,7 +86,10 @@ Quantity: ${quantity}
 Product link:
 ${productUrl}
 
-Please confirm availability and delivery details.`;
+Please confirm availability and delivery details.
+
+Delivery Address:
+[Customer will enter their full delivery address in WhatsApp]`;
 
   return buildWhatsAppUrl(message);
 }
@@ -129,7 +132,10 @@ ${itemsSummary.trim()}
 
 Estimated Product Total: ${formatPrice(subtotal)}
 
-Please confirm availability, final price, shipping charges and delivery details.`;
+Please confirm availability, final price, shipping charges and delivery details.
+
+Delivery Address:
+[Customer will enter their full delivery address in WhatsApp]`;
 
   return buildWhatsAppUrl(message);
 }
@@ -163,7 +169,7 @@ export function buildCheckoutWhatsAppUrl({
    Product: ${itemUrl}\n\n`;
   });
 
-  let addressSummary = "";
+  let addressSummary = "\n\nDelivery Address:\n[Customer will enter their full delivery address in WhatsApp]";
   if (address) {
     addressSummary = `\n\nDelivery Address:
 Name: ${address.fullName}
