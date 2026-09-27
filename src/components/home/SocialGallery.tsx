@@ -10,31 +10,31 @@ export function SocialGallery() {
   const tiles = [
     {
       category: "Handmade Bags",
-      subtitle: "Tote Bags & Everyday Carry",
+      subtitle: "Shopping Bags & Handbags",
       icon: ShoppingBag,
       url: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80",
     },
     {
-      category: "Fabric Pouches",
-      subtitle: "Makeup & Utility Organizers",
+      category: "Pouches & Organizers",
+      subtitle: "Makeup Box Sets & Kit Bags",
       icon: Sparkles,
       url: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80",
     },
     {
-      category: "Bookmarks & Gifts",
-      subtitle: "Creative Handmade Accessories",
+      category: "Bookmarks & Accessories",
+      subtitle: "Fabric Bookmarks & Gifts",
       icon: Heart,
       url: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
     },
     {
-      category: "Custom Creations",
-      subtitle: "Personalized WhatsApp Orders",
+      category: "Traditional & Festive",
+      subtitle: "Madilakki Bags & Custom Creations",
       icon: MessageSquare,
-      url: "https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=600&q=80",
+      url: "https://images.unsplash.com/photo-1606760227091-3dd858d9721d?auto=format&fit=crop&w=600&q=80",
     },
   ];
 
-  const instagramProfileUrl = "https://instagram.com";
+  const instagramProfileUrl = "https://www.instagram.com/jyothimanju2002/";
 
   return (
     <section className="py-16 bg-cream border-b border-sand/40">

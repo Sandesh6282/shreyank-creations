@@ -223,7 +223,7 @@ export function AddressManager({
               <input
                 type="text"
                 required
-                placeholder="e.g. Flat 4B, Blue Pottery Enclave"
+                placeholder="e.g. Flat 4B, Sunshine Apartments"
                 value={addressLine1}
                 onChange={(e) => setAddressLine1(e.target.value)}
                 className="w-full pl-9 pr-3 py-2 bg-cream border border-sand rounded-lg text-espresso focus:outline-none focus:border-terracotta text-xs"
@@ -239,7 +239,7 @@ export function AddressManager({
             <div className="relative">
               <input
                 type="text"
-                placeholder="e.g. Near Hawa Mahal, Amer Road"
+                placeholder="e.g. Near Indiranagar Metro, MG Road"
                 value={addressLine2}
                 onChange={(e) => setAddressLine2(e.target.value)}
                 className="w-full pl-9 pr-3 py-2 bg-cream border border-sand rounded-lg text-espresso focus:outline-none focus:border-terracotta text-xs"
@@ -256,7 +256,7 @@ export function AddressManager({
               <input
                 type="text"
                 required
-                placeholder="e.g. Jaipur"
+                placeholder="e.g. Bengaluru"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 className="w-full px-3 py-2 bg-cream border border-sand rounded-lg text-espresso focus:outline-none focus:border-terracotta text-xs"

@@ -29,7 +29,7 @@ export default function CartPage() {
               Your cart is empty
             </h1>
             <p className="text-xs text-taupe mb-6 leading-relaxed">
-              Explore our handmade Indian handicraft collections, blue pottery, and folk art to fill your space with warmth.
+              Explore our handmade fabric bags, utility pouches, organizers, bookmarks, and custom creations.
             </p>
             <Link href="/shop" passHref>
               <Button variant="primary" size="md" className="gap-2">

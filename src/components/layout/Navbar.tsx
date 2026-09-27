@@ -362,7 +362,7 @@ export function Navbar() {
                 Popular Searches:
               </span>
               <div className="flex flex-wrap gap-2">
-                {["Blue Pottery", "Brass Urli", "Wooden Mirror", "Kantha Throw", "Jharokha"].map(
+                {["Handmade Bags", "Pouches", "Organizers", "Bookmarks", "Custom Combo"].map(
                   (tag) => (
                     <button
                       key={tag}

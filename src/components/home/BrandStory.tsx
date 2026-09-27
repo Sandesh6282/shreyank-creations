@@ -70,7 +70,7 @@ export function BrandStory() {
             </h2>
 
             <p className="text-base text-taupe leading-relaxed">
-              At SHREYANK CREATION, we celebrate authentic small-business craftsmanship. Every tote bag, utility pouch, organizer, bookmark, and handmade accessory is created by hand with attention to detail and personal touch.
+              Every SHREYANK CREATION is made with care, creativity and a personal touch. From everyday bags and useful organizers to traditional and festive creations, our products are designed to bring together practicality and handmade charm.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">

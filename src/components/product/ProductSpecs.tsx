@@ -69,7 +69,7 @@ export function ProductSpecs({ product }: ProductSpecsProps) {
                 <Sparkles className="w-5 h-5 text-terracotta shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-medium text-espresso text-xs uppercase tracking-wider">Handcrafted Artistry</h4>
-                  <p className="text-xs text-taupe mt-0.5">Individually sculpted and painted with care.</p>
+                  <p className="text-xs text-taupe mt-0.5">Individually stitched and finished by hand with care.</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-3 bg-sand-light/50 rounded-lg">

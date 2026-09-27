@@ -29,7 +29,7 @@ export function Hero() {
             </h1>
 
             <p className="text-base sm:text-lg text-taupe max-w-2xl mx-auto lg:mx-0 leading-relaxed font-sans font-normal">
-              Discover handcrafted fabric bags, utility pouches, organizers, bookmarks, and customized handmade creations. Made with love and delivered across India.
+              Discover handmade bags, pouches, organizers, accessories and thoughtfully crafted creations from SHREYANK CREATION. Made with care and delivered across India.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">

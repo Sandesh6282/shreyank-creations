@@ -50,7 +50,7 @@ export function FeaturedProducts({ products = [] }: FeaturedProductsProps) {
             Featured Handmade Creations
           </h2>
           <p className="text-sm text-taupe mt-2">
-            Each creation is sculpted, painted, or carved by artisan hands with authentic detail.
+            Each creation is stitched, crafted, and detailed by hand with authentic care.
           </p>
         </div>
 
