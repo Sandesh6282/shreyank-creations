@@ -1,91 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { CATEGORIES } from "@/data/categories";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 
-interface FeaturedCategoriesProps {
-  categoryCounts?: Record<string, number>;
-}
-
-export function FeaturedCategories({ categoryCounts = {} }: FeaturedCategoriesProps) {
-  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
-
-  const handleImageError = (catId: string) => {
-    setImageErrors((prev) => ({ ...prev, [catId]: true }));
-  };
-
+export function FeaturedCategories() {
   return (
     <section className="py-16 bg-cream-surface border-b border-sand/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-          <div>
-            <span className="text-xs font-semibold text-terracotta uppercase tracking-widest block mb-1">
-              Curated Collections
-            </span>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-espresso">
-              Explore By Craft Category
-            </h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-3xl mx-auto space-y-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-terracotta/10 border border-terracotta/20 text-terracotta text-xs font-semibold tracking-wider uppercase">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>SHREYANK CREATION</span>
           </div>
-          <Link
-            href="/shop"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-terracotta hover:text-terracotta-hover transition-colors group"
-          >
-            <span>View All Categories</span>
-            <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {CATEGORIES.map((cat) => {
-            const count = categoryCounts[cat.slug] || 0;
-            const hasError = imageErrors[cat.id];
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-espresso tracking-tight">
+            Explore Our Handmade Collection
+          </h2>
 
-            return (
-              <Link
-                key={cat.id}
-                href={`/shop/${cat.slug}`}
-                className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-sand-light border border-sand/60 shadow-card hover:shadow-artisan transition-all duration-300 flex flex-col justify-end p-6"
-              >
-                {!hasError ? (
-                  <Image
-                    src={cat.image}
-                    alt={cat.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                    onError={() => handleImageError(cat.id)}
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-sand-light via-cream-surface to-sand/40 flex items-center justify-center p-6 text-center">
-                    <div className="w-12 h-12 rounded-full bg-cream-surface border border-sand shadow-sm flex items-center justify-center text-terracotta mb-2">
-                      <Sparkles className="w-6 h-6 text-terracotta" />
-                    </div>
-                  </div>
-                )}
+          <p className="text-base sm:text-lg text-taupe leading-relaxed font-sans font-normal max-w-2xl mx-auto">
+            Discover handmade bags, pouches, organizers, traditional creations and more, crafted with care by SHREYANK CREATION.
+          </p>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-espresso/85 via-espresso/40 to-transparent transition-opacity group-hover:from-espresso/90" />
-
-                <div className="relative z-10 text-cream">
-                  <span className="text-xs font-medium text-sand uppercase tracking-wider block mb-1">
-                    {count > 0 ? `${count} ${count === 1 ? "Item" : "Items"}` : "Handcrafted Collection"}
-                  </span>
-                  <h3 className="font-serif text-2xl font-bold group-hover:text-terracotta-light transition-colors">
-                    {cat.name}
-                  </h3>
-                  <p className="text-xs text-cream-muted mt-1 line-clamp-2 opacity-90 font-sans">
-                    {cat.description}
-                  </p>
-                  <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-terracotta-light mt-3 group-hover:translate-x-1 transition-transform">
-                    <span>Explore Collection</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
+          <div className="pt-4 flex justify-center">
+            <Link href="/shop" passHref>
+              <Button size="lg" variant="primary" className="gap-2 shadow-md">
+                <ShoppingBag className="w-4 h-4" />
+                <span>View All Products</span>
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

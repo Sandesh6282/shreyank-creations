@@ -19,22 +19,6 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: "cat-3",
-    name: "Bookmarks & Accessories",
-    slug: "bookmarks-accessories",
-    description: "Creative handmade fabric bookmarks, charms, and handcrafted accessories.",
-    image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80",
-    productCount: 0,
-  },
-  {
-    id: "cat-4",
-    name: "Home & Dining",
-    slug: "home-dining",
-    description: "Handcrafted dining table mat sets of 4 and decorative home utility creations.",
-    image: "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=800&q=80",
-    productCount: 0,
-  },
-  {
-    id: "cat-5",
     name: "Traditional & Festive",
     slug: "traditional-festive",
     description: "Traditional Madilakki bags, banana stand holders, and festive handmade creations.",
@@ -42,7 +26,7 @@ export const CATEGORIES: Category[] = [
     productCount: 0,
   },
   {
-    id: "cat-6",
+    id: "cat-4",
     name: "Gift Sets",
     slug: "gift-sets",
     description: "Thoughtfully curated handmade bag and purse gift combos.",
@@ -50,7 +34,7 @@ export const CATEGORIES: Category[] = [
     productCount: 0,
   },
   {
-    id: "cat-7",
+    id: "cat-5",
     name: "Customized Creations",
     slug: "customized-creations",
     description: "Bespoke handmade fabric creations tailored to your specifications via WhatsApp.",

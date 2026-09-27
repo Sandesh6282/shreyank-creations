@@ -29,7 +29,7 @@ export default async function HomePage() {
   return (
     <div className="space-y-0">
       <Hero />
-      <FeaturedCategories categoryCounts={categoryCounts} />
+      <FeaturedCategories />
       <FeaturedProducts products={featuredProducts} />
       <BrandStory />
       <EditorialBanner />
