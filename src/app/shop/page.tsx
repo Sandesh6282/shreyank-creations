@@ -4,6 +4,7 @@ import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { fetchStorefrontProducts, fetchDatabaseCategories } from "@/services/productService";
 import { Product, Category } from "@/types/product";
+import { CATEGORIES, isProductInCategory } from "@/data/categories";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { FilterSidebar } from "@/components/shop/FilterSidebar";
 import { SortSelect } from "@/components/shop/SortSelect";
@@ -46,10 +47,18 @@ function ShopContent() {
     loadData();
   }, []);
 
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const cat of CATEGORIES) {
+      counts[cat.slug] = products.filter((p) => isProductInCategory(p, cat.slug)).length;
+    }
+    return counts;
+  }, [products]);
+
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
       if (selectedCategory && selectedCategory !== "all") {
-        if (p.categorySlug !== selectedCategory) return false;
+        if (!isProductInCategory(p, selectedCategory)) return false;
       }
 
       if (p.price > maxPrice) return false;
@@ -148,6 +157,7 @@ function ShopContent() {
             onReset={handleReset}
             isOpenMobile={isMobileFilterOpen}
             onCloseMobile={() => setIsMobileFilterOpen(false)}
+            categoryCounts={categoryCounts}
           />
 
           <div className="flex-1 space-y-6">

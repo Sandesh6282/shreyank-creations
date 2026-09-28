@@ -1,4 +1,5 @@
-import { Category } from "@/types/product";
+import { Category, Product } from "@/types/product";
+import { slugify } from "@/lib/utils";
 
 export const CATEGORIES: Category[] = [
   {
@@ -42,3 +43,14 @@ export const CATEGORIES: Category[] = [
     productCount: 0,
   },
 ];
+
+export function isProductInCategory(product: Product, categorySlug: string): boolean {
+  if (!categorySlug || categorySlug === "all") return true;
+
+  const pCatSlug = (product.categorySlug || "").toLowerCase();
+  const pCatName = (product.category || "").toLowerCase();
+  const targetSlug = categorySlug.toLowerCase();
+
+  // Strict match on database category slug or category name
+  return pCatSlug === targetSlug || slugify(pCatName) === targetSlug;
+}

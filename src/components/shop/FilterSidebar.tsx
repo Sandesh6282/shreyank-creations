@@ -12,6 +12,7 @@ interface FilterSidebarProps {
   onReset: () => void;
   isOpenMobile?: boolean;
   onCloseMobile?: () => void;
+  categoryCounts?: Record<string, number>;
 }
 
 export function FilterSidebar({
@@ -22,6 +23,7 @@ export function FilterSidebar({
   onReset,
   isOpenMobile,
   onCloseMobile,
+  categoryCounts,
 }: FilterSidebarProps) {
   const content = (
     <div className="space-y-8">
@@ -56,20 +58,23 @@ export function FilterSidebar({
           >
             <span>All Craft Collections</span>
           </button>
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => onCategoryChange(cat.slug)}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center justify-between ${
-                selectedCategory === cat.slug
-                  ? "bg-terracotta/10 text-terracotta font-semibold"
-                  : "text-espresso hover:bg-sand/30"
-              }`}
-            >
-              <span>{cat.name}</span>
-              <span className="text-xs text-taupe">({cat.productCount})</span>
-            </button>
-          ))}
+          {CATEGORIES.map((cat) => {
+            const count = categoryCounts ? (categoryCounts[cat.slug] ?? 0) : cat.productCount;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => onCategoryChange(cat.slug)}
+                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center justify-between ${
+                  selectedCategory === cat.slug
+                    ? "bg-terracotta/10 text-terracotta font-semibold"
+                    : "text-espresso hover:bg-sand/30"
+                }`}
+              >
+                <span>{cat.name}</span>
+                <span className="text-xs text-taupe">({count})</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

@@ -5,6 +5,22 @@ import { slugify } from "@/lib/utils";
 
 // Helper to map DB row to Product TypeScript type
 export function mapDbToProduct(row: Record<string, unknown>): Product {
+  const rowId = String(row.id);
+  const isActive = rowId === "f8adbb0c-6c32-4031-8f49-4844f433b1ca" ? false : Boolean(row.active);
+
+  // Products requested to be assigned to Bags category:
+  // Designer Purse (9b50ad62-5465-4f06-be12-7d2b428845ec),
+  // Big Size Shopping Bag (8b6fa7bf-7572-4689-91d9-7f972a14ba0f),
+  // Stylish Handbag (7132842c-d85c-4d44-a996-040385a2f1a7)
+  const isBagProduct =
+    rowId === "9b50ad62-5465-4f06-be12-7d2b428845ec" ||
+    rowId === "8b6fa7bf-7572-4689-91d9-7f972a14ba0f" ||
+    rowId === "7132842c-d85c-4d44-a996-040385a2f1a7" ||
+    String(row.category_slug || "") === "home-decor";
+
+  const categoryName = isBagProduct ? "Bags" : String(row.category_name || "General");
+  const categorySlug = isBagProduct ? "bags" : String(row.category_slug || "general");
+
   const priceNum = Number(row.price) || 0;
   const salePriceNum = row.sale_price ? Number(row.sale_price) : undefined;
   const effectivePrice = salePriceNum || priceNum;
@@ -14,13 +30,13 @@ export function mapDbToProduct(row: Record<string, unknown>): Product {
     : undefined;
 
   return {
-    id: String(row.id),
+    id: rowId,
     name: String(row.name || ""),
     slug: String(row.slug || ""),
     description: String(row.description || ""),
     shortDescription: String(row.short_description || ""),
-    category: String(row.category_name || "General"),
-    categorySlug: String(row.category_slug || "general"),
+    category: categoryName,
+    categorySlug: categorySlug,
     categoryId: row.category_id ? String(row.category_id) : undefined,
     price: effectivePrice,
     salePrice: salePriceNum,
@@ -37,7 +53,7 @@ export function mapDbToProduct(row: Record<string, unknown>): Product {
     shippingInfo: String(row.shipping_info || "Shipping details will be confirmed during checkout."),
     featured: Boolean(row.featured),
     bestseller: Boolean(row.bestseller),
-    active: Boolean(row.active),
+    active: isActive,
     isFeatured: Boolean(row.featured),
     isBestSeller: Boolean(row.bestseller),
     inStock: Number(row.stock) > 0,
@@ -60,10 +76,14 @@ export async function fetchStorefrontProducts(filters?: {
   }
 
   try {
-    let query = supabase.from("products").select("*").eq("active", true);
+    let query = supabase.from("products").select("*").eq("active", true).neq("id", "f8adbb0c-6c32-4031-8f49-4844f433b1ca");
 
     if (filters?.categorySlug && filters.categorySlug !== "all") {
-      query = query.eq("category_slug", filters.categorySlug);
+      if (filters.categorySlug === "bags") {
+        query = query.or("category_slug.eq.bags,category_slug.eq.home-decor");
+      } else {
+        query = query.eq("category_slug", filters.categorySlug);
+      }
     }
 
     if (filters?.featuredOnly) {
