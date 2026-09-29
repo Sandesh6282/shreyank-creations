@@ -3,12 +3,9 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { fetchCustomerProfile } from "@/services/customerAuthService";
-import { AccountGuard } from "@/components/auth/AccountGuard";
 import { AddressManager } from "@/components/checkout/AddressManager";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { formatPrice } from "@/lib/utils";
-import { UserProfile } from "@/types/auth";
 import { ShippingAddress } from "@/types/order";
 import { useToast } from "@/context/ToastContext";
 import { buildCheckoutWhatsAppUrl } from "@/lib/whatsapp";
@@ -18,23 +15,19 @@ import {
   ShoppingBag,
   ArrowLeft,
   AlertCircle,
-  CheckCircle2,
   MessageSquare,
 } from "lucide-react";
 
-function CheckoutContent() {
+export default function CheckoutPage() {
   const { addToast } = useToast();
   const { cartItems, revalidateCart } = useCart();
 
-  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<ShippingAddress | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     async function loadData() {
       try {
-        const userProf = await fetchCustomerProfile();
-        setProfile(userProf);
         await revalidateCart();
       } catch (err) {
         console.error("Order enquiry init error:", err);
@@ -128,27 +121,8 @@ function CheckoutContent() {
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Column: Customer Info & Address Selection */}
+          {/* Left Column: Address Selection */}
           <div className="lg:col-span-7 space-y-6">
-            {/* Customer Contact Details Summary */}
-            <div className="bg-cream-surface rounded-2xl border border-sand/60 p-6 shadow-card space-y-3">
-              <h3 className="font-serif text-lg font-bold text-espresso border-b border-sand/40 pb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-sage" />
-                <span>Customer Information</span>
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-espresso">
-                <div>
-                  <span className="text-[10px] font-bold text-taupe uppercase tracking-wider block">Full Name</span>
-                  <span className="font-semibold">{profile?.fullName || "Valued Customer"}</span>
-                </div>
-                <div>
-                  <span className="text-[10px] font-bold text-taupe uppercase tracking-wider block">Email Address</span>
-                  <span className="font-semibold">{profile?.email || ""}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Address Selector */}
             <div className="bg-cream-surface rounded-2xl border border-sand/60 p-6 shadow-card">
               <AddressManager
                 selectedAddress={selectedAddress}
@@ -239,13 +213,5 @@ function CheckoutContent() {
         </div>
       </div>
     </div>
-  );
-}
-
-export default function CheckoutPage() {
-  return (
-    <AccountGuard>
-      <CheckoutContent />
-    </AccountGuard>
   );
 }

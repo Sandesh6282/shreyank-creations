@@ -7,7 +7,7 @@ import { Order } from "@/types/order";
 import { formatPrice } from "@/lib/utils";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { Button } from "@/components/ui/Button";
-import { CheckCircle, PackageCheck, ShoppingBag, MapPin, Truck, Sparkles, ArrowRight } from "lucide-react";
+import { CheckCircle, PackageCheck, ShoppingBag, MapPin, Truck } from "lucide-react";
 
 interface OrderSuccessPageProps {
   params: Promise<{
@@ -124,11 +124,6 @@ export default function OrderSuccessPage({ params }: OrderSuccessPageProps) {
 
           {/* Action CTAs */}
           <div className="mt-8 pt-6 border-t border-sand flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/account" passHref>
-              <Button variant="secondary" size="md" className="gap-2 w-full sm:w-auto">
-                <span>View My Orders</span>
-              </Button>
-            </Link>
             <Link href="/shop" passHref>
               <Button variant="primary" size="md" className="gap-2 w-full sm:w-auto">
                 <ShoppingBag className="w-4 h-4" />

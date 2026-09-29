@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
-import { checkIsAdminUser } from "@/services/customerAuthService";
+import { checkIsAdminUser } from "@/services/adminAuthService";
 import { Loader2, ShieldAlert, UserX, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
@@ -128,12 +128,12 @@ export function AdminGuard({ children }: AdminGuardProps) {
             Admin Privilege Required
           </h3>
           <p className="text-xs text-taupe mb-6 leading-relaxed">
-            Your account is authenticated as a customer, but does not have administrator privileges to access the Inventory Dashboard.
+            Your account is authenticated, but does not have administrator privileges to access the Inventory Dashboard.
           </p>
           <div className="flex flex-col gap-3">
-            <Link href="/account" passHref>
+            <Link href="/" passHref>
               <Button variant="primary" size="md" className="w-full">
-                Go to Customer Account
+                Return to Storefront
               </Button>
             </Link>
             <Link href="/admin/login" passHref>

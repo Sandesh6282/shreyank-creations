@@ -3,13 +3,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { CartItem, Product } from "@/types/product";
 import { useToast } from "./ToastContext";
-import {
-  fetchUserCart,
-  syncCartItemToDb,
-  removeCartItemFromDb,
-  clearUserCartInDb,
-  mergeGuestCartIntoUserCart,
-} from "@/services/cartService";
 
 interface CartContextType {
   cartItems: CartItem[];
@@ -31,30 +24,34 @@ const STORAGE_KEY = "shreyank_creations_cart";
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [isSyncing, setIsSyncing] = useState(false);
   const { addToast } = useToast();
 
-  // Helper to load guest items from localStorage safely
-  const getGuestCartFromStorage = (): CartItem[] => {
+  // Initial load from localStorage
+  useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
+      if (saved) {
+        setCartItems(JSON.parse(saved));
+      }
+    } catch (err) {
+      console.error("Failed to load cart from localStorage", err);
+    } finally {
+      setIsInitialized(true);
     }
-  };
+  }, []);
 
-  // Clear guest cart from localStorage
-  const clearGuestStorage = () => {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch {
-      // ignore
+  // Save guest cart to localStorage whenever cartItems changes
+  useEffect(() => {
+    if (isInitialized) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cartItems));
+      } catch (e) {
+        console.error("Failed to save cart to localStorage", e);
+      }
     }
-  };
+  }, [cartItems, isInitialized]);
 
-  // Revalidate existing cart items against fresh Supabase product state
+  // Revalidate existing cart items against fresh product catalog
   const revalidateCart = useCallback(async () => {
     if (cartItems.length === 0) return;
 
@@ -77,9 +74,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
           if (!fresh || !fresh.active || fresh.stock <= 0) {
             itemsRemoved = true;
-            if (userId) {
-              removeCartItemFromDb(userId, item.product.id).catch(() => {});
-            }
             continue;
           }
 
@@ -87,10 +81,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           if (validQty > fresh.stock) {
             validQty = fresh.stock;
             itemsAdjusted = true;
-          }
-
-          if (userId && validQty !== item.quantity) {
-            syncCartItemToDb(userId, fresh.id, validQty).catch(() => {});
           }
 
           updated.push({
@@ -110,107 +100,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } catch (e) {
       console.error("Failed to revalidate cart items:", e);
     }
-  }, [cartItems.length, userId, addToast]);
-
-  // Initial session setup & auth change listener
-  useEffect(() => {
-    let isMounted = true;
-
-    async function initCartSession() {
-      setIsSyncing(true);
-      try {
-        const { supabase, isSupabaseConfigured } = await import("@/lib/supabase/client");
-        if (isSupabaseConfigured && supabase) {
-          const { data: { session } } = await supabase.auth.getSession();
-          const currentUid = session?.user?.id || null;
-
-          if (isMounted) {
-            setUserId(currentUid);
-          }
-
-          if (currentUid) {
-            // Logged-in customer
-            const guestItems = getGuestCartFromStorage();
-            if (guestItems.length > 0) {
-              const merged = await mergeGuestCartIntoUserCart(currentUid, guestItems);
-              clearGuestStorage();
-              if (isMounted) {
-                setCartItems(merged);
-              }
-            } else {
-              const userCart = await fetchUserCart(currentUid);
-              if (isMounted) {
-                setCartItems(userCart);
-              }
-            }
-          } else {
-            // Guest user
-            const guestItems = getGuestCartFromStorage();
-            if (isMounted) {
-              setCartItems(guestItems);
-            }
-          }
-        } else {
-          const guestItems = getGuestCartFromStorage();
-          if (isMounted) {
-            setCartItems(guestItems);
-          }
-        }
-      } catch (err) {
-        console.error("Cart session initialization failed:", err);
-      } finally {
-        if (isMounted) {
-          setIsInitialized(true);
-          setIsSyncing(false);
-        }
-      }
-    }
-
-    initCartSession();
-
-    let authSubscription: { unsubscribe: () => void } | null = null;
-    import("@/lib/supabase/client").then(({ supabase, isSupabaseConfigured }) => {
-      if (isSupabaseConfigured && supabase) {
-        const { data } = supabase.auth.onAuthStateChange(async (_event, session) => {
-          if (!isMounted) return;
-          const newUid = session?.user?.id || null;
-          setUserId(newUid);
-
-          if (newUid) {
-            const guestItems = getGuestCartFromStorage();
-            if (guestItems.length > 0) {
-              const merged = await mergeGuestCartIntoUserCart(newUid, guestItems);
-              clearGuestStorage();
-              setCartItems(merged);
-            } else {
-              const userCart = await fetchUserCart(newUid);
-              setCartItems(userCart);
-            }
-          } else {
-            // Logged out
-            setCartItems([]);
-          }
-        });
-        authSubscription = data.subscription;
-      }
-    });
-
-    return () => {
-      isMounted = false;
-      if (authSubscription) authSubscription.unsubscribe();
-    };
-  }, []);
-
-  // Save guest cart to localStorage whenever cartItems changes
-  useEffect(() => {
-    if (isInitialized && !userId) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(cartItems));
-      } catch (e) {
-        console.error("Failed to save cart to localStorage", e);
-      }
-    }
-  }, [cartItems, isInitialized, userId]);
+  }, [cartItems.length, addToast]);
 
   // Add item to cart with stock & active validation
   const addToCart = (product: Product, quantityToAdd: number = 1) => {
@@ -244,10 +134,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           "info"
         );
 
-        if (userId) {
-          syncCartItemToDb(userId, product.id, maxAllowed).catch(() => {});
-        }
-
         return prev.map((item) =>
           item.product.id === product.id ? { ...item, quantity: maxAllowed, product } : item
         );
@@ -256,22 +142,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       addToast(`Added "${product.name}" to your cart.`);
 
       if (existingItem) {
-        const nextItems = prev.map((item) =>
+        return prev.map((item) =>
           item.product.id === product.id
             ? { ...item, quantity: desiredQty, product }
             : item
         );
-        if (userId) {
-          syncCartItemToDb(userId, product.id, desiredQty).catch(() => {});
-        }
-        return nextItems;
       }
 
-      const nextItems = [...prev, { product, quantity: desiredQty }];
-      if (userId) {
-        syncCartItemToDb(userId, product.id, desiredQty).catch(() => {});
-      }
-      return nextItems;
+      return [...prev, { product, quantity: desiredQty }];
     });
   };
 
@@ -284,10 +162,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return prev.filter((i) => i.product.id !== productId);
     });
-
-    if (userId) {
-      removeCartItemFromDb(userId, productId).catch(() => {});
-    }
   };
 
   // Update item quantity with stock boundary validation
@@ -312,10 +186,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         );
       }
 
-      if (userId) {
-        syncCartItemToDb(userId, productId, finalQty).catch(() => {});
-      }
-
       return prev.map((i) =>
         i.product.id === productId ? { ...i, quantity: finalQty } : i
       );
@@ -325,10 +195,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   // Clear cart completely
   const clearCart = () => {
     setCartItems([]);
-    if (userId) {
-      clearUserCartInDb(userId).catch(() => {});
-    } else {
-      clearGuestStorage();
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // ignore
     }
     addToast("Cleared cart", "info");
   };
@@ -352,7 +222,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         totalItems,
         subtotal,
         totalAmount,
-        isSyncing,
+        isSyncing: false,
       }}
     >
       {children}
