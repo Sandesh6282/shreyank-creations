@@ -3,34 +3,41 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Instagram, Sparkles, Heart, ShoppingBag, MessageSquare } from "lucide-react";
+import { Product } from "@/types/product";
 
-export function SocialGallery() {
+interface SocialGalleryProps {
+  products?: Product[];
+}
+
+export function SocialGallery({ products = [] }: SocialGalleryProps) {
   const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
+
+  const validProducts = products.filter((p) => p.images && p.images.length > 0);
 
   const tiles = [
     {
       category: "Handmade Bags",
       subtitle: "Shopping Bags & Handbags",
       icon: ShoppingBag,
-      url: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80",
+      product: validProducts.find((p) => p.categorySlug === "bags" || p.slug === "stylish-handbag") || validProducts[0] || null,
     },
     {
       category: "Pouches & Organizers",
       subtitle: "Makeup Box Sets & Kit Bags",
       icon: Sparkles,
-      url: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80",
+      product: validProducts.find((p) => p.categorySlug === "pouches-organizers" || p.slug === "makeup-box-with-6-pouches") || validProducts[1] || null,
     },
     {
       category: "Bookmarks & Accessories",
       subtitle: "Fabric Bookmarks & Gifts",
       icon: Heart,
-      url: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
+      product: validProducts.find((p) => p.slug === "handmade-fabric-bookmarker") || validProducts[2] || null,
     },
     {
       category: "Traditional & Festive",
       subtitle: "Madilakki Bags & Custom Creations",
       icon: MessageSquare,
-      url: "https://images.unsplash.com/photo-1606760227091-3dd858d9721d?auto=format&fit=crop&w=600&q=80",
+      product: validProducts.find((p) => p.categorySlug === "traditional-festive" || p.slug === "madilakki-bag") || validProducts[3] || null,
     },
   ];
 
@@ -61,6 +68,7 @@ export function SocialGallery() {
           {tiles.map((tile, idx) => {
             const Icon = tile.icon;
             const hasError = imageErrors[idx];
+            const imageUrl = tile.product?.images[0];
 
             return (
               <a
@@ -70,11 +78,11 @@ export function SocialGallery() {
                 rel="noopener noreferrer"
                 className="group relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-cream-surface via-sand-light to-cream border border-sand/60 shadow-card hover:shadow-artisan transition-all duration-300 flex flex-col items-center justify-center p-4 text-center"
               >
-                {!hasError ? (
+                {imageUrl && !hasError ? (
                   <>
                     <Image
-                      src={tile.url}
-                      alt={tile.category}
+                      src={imageUrl}
+                      alt={`SHREYANK CREATION ${tile.product?.name || tile.category}`}
                       fill
                       sizes="(max-width: 768px) 50vw, 25vw"
                       className="object-cover object-center group-hover:scale-110 transition-transform duration-500"
@@ -82,7 +90,7 @@ export function SocialGallery() {
                     />
                     <div className="absolute inset-0 bg-espresso/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-cream p-4">
                       <Instagram className="w-8 h-8 text-cream mb-2" />
-                      <span className="font-serif font-bold text-sm">{tile.category}</span>
+                      <span className="font-serif font-bold text-sm">{tile.product?.name || tile.category}</span>
                       <span className="text-[10px] text-sand">{tile.subtitle}</span>
                     </div>
                   </>

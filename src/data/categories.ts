@@ -7,7 +7,7 @@ export const CATEGORIES: Category[] = [
     name: "Bags",
     slug: "bags",
     description: "Handmade fabric shopping bags, stylish handbags, and everyday carry creations.",
-    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+    image: "https://xqsryyvonzfcievpytmk.supabase.co/storage/v1/object/public/product-images/products/ng6fp4j_1790594168052.jpeg",
     productCount: 0,
   },
   {
@@ -15,7 +15,7 @@ export const CATEGORIES: Category[] = [
     name: "Pouches & Organizers",
     slug: "pouches-organizers",
     description: "Utility pouches, makeup box sets with 6 pouches, and travelling makeup kit organizers.",
-    image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80",
+    image: "https://xqsryyvonzfcievpytmk.supabase.co/storage/v1/object/public/product-images/products/hy3bj0v_1790593659440.png",
     productCount: 0,
   },
   {
@@ -23,7 +23,7 @@ export const CATEGORIES: Category[] = [
     name: "Traditional & Festive",
     slug: "traditional-festive",
     description: "Traditional Madilakki bags, banana stand holders, and festive handmade creations.",
-    image: "https://images.unsplash.com/photo-1606760227091-3dd858d9721d?auto=format&fit=crop&w=800&q=80",
+    image: "https://xqsryyvonzfcievpytmk.supabase.co/storage/v1/object/public/product-images/products/ktkvi9n_1790594369585.jpeg",
     productCount: 0,
   },
   {
@@ -31,7 +31,7 @@ export const CATEGORIES: Category[] = [
     name: "Gift Sets",
     slug: "gift-sets",
     description: "Thoughtfully curated handmade bag and purse gift combos.",
-    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80",
+    image: "https://xqsryyvonzfcievpytmk.supabase.co/storage/v1/object/public/product-images/products/ruu5ehm_1790594052734.jpeg",
     productCount: 0,
   },
   {
@@ -39,7 +39,7 @@ export const CATEGORIES: Category[] = [
     name: "Customized Creations",
     slug: "customized-creations",
     description: "Bespoke handmade fabric creations tailored to your specifications via WhatsApp.",
-    image: "https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=800&q=80",
+    image: "https://xqsryyvonzfcievpytmk.supabase.co/storage/v1/object/public/product-images/products/9tucfgz_1790594243570.jpeg",
     productCount: 0,
   },
 ];

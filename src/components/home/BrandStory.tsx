@@ -6,10 +6,33 @@ import Link from "next/link";
 import { Sparkles, Heart, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { BrandedPlaceholder } from "@/components/ui/BrandedPlaceholder";
+import { Product } from "@/types/product";
 
-export function BrandStory() {
+interface BrandStoryProps {
+  products?: Product[];
+}
+
+export function BrandStory({ products = [] }: BrandStoryProps) {
   const [primaryError, setPrimaryError] = useState(false);
   const [secondaryError, setSecondaryError] = useState(false);
+
+  const validProducts = products.filter((p) => p.images && p.images.length > 0);
+
+  // Select real products from database (e.g. Big Size Shopping Bag / Makeup Box and Bookmarker)
+  const primaryProduct =
+    validProducts.find((p) => p.slug === "big-size-shopping-bag" || p.slug === "makeup-box-with-6-pouches") ||
+    validProducts[1] ||
+    validProducts[0] ||
+    null;
+
+  const secondaryProduct =
+    validProducts.find((p) => p.slug === "handmade-fabric-bookmarker" || p.slug === "travelling-makeup-kit-organizer") ||
+    validProducts[2] ||
+    validProducts[1] ||
+    null;
+
+  const primaryImageUrl = primaryProduct?.images[0];
+  const secondaryImageUrl = secondaryProduct?.images[0];
 
   return (
     <section className="py-20 bg-sand-light/50 border-b border-sand/40">
@@ -18,10 +41,10 @@ export function BrandStory() {
           {/* Image Column */}
           <div className="lg:col-span-6 relative">
             <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden shadow-artisan border-4 border-cream-surface">
-              {!primaryError ? (
+              {primaryImageUrl && !primaryError ? (
                 <Image
-                  src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=900&q=80"
-                  alt="SHREYANK CREATION handmade fabric craft process"
+                  src={primaryImageUrl}
+                  alt={`SHREYANK CREATION ${primaryProduct?.name || "handmade creation"}`}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover object-center"
@@ -39,10 +62,10 @@ export function BrandStory() {
 
             {/* Overlay secondary image */}
             <div className="hidden sm:block absolute -bottom-8 -right-8 w-1/2 aspect-square rounded-xl overflow-hidden shadow-2xl border-4 border-cream-surface">
-              {!secondaryError ? (
+              {secondaryImageUrl && !secondaryError ? (
                 <Image
-                  src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80"
-                  alt="Handmade bookmark and fabric accessories detail"
+                  src={secondaryImageUrl}
+                  alt={`SHREYANK CREATION ${secondaryProduct?.name || "handmade accessory"}`}
                   fill
                   sizes="30vw"
                   className="object-cover object-center"

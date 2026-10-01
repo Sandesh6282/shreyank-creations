@@ -31,7 +31,7 @@ export default function AboutPage() {
           <div className="lg:col-span-6 relative">
             <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-artisan border-4 border-cream-surface">
               <Image
-                src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80"
+                src="https://xqsryyvonzfcievpytmk.supabase.co/storage/v1/object/public/product-images/products/ng6fp4j_1790594168052.jpeg"
                 alt="SHREYANK CREATION handmade fabric craft display"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

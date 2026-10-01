@@ -7,11 +7,26 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { BrandedPlaceholder } from "@/components/ui/BrandedPlaceholder";
+import { Product } from "@/types/product";
 
-export function Hero() {
+interface HeroProps {
+  products?: Product[];
+}
+
+export function Hero({ products = [] }: HeroProps) {
   const [imageError, setImageError] = useState(false);
   const customWhatsAppUrl =
     "https://wa.me/918951119766?text=Hi%20SHREYANK%20CREATION%2C%20I%27d%20like%20to%20discuss%20a%20custom%20order.";
+
+  // Select real product image from active products (e.g., Stylish Handbag or Designer Purse or first product with image)
+  const validProducts = products.filter((p) => p.images && p.images.length > 0);
+  const heroProduct =
+    validProducts.find((p) => p.slug === "stylish-handbag" || p.categorySlug === "bags") ||
+    validProducts[0] ||
+    null;
+
+  const heroImageUrl = heroProduct?.images[0];
+  const heroProductTitle = heroProduct ? heroProduct.name : "Handcrafted Bags, Pouches & Custom Accessories";
 
   return (
     <section className="relative bg-cream py-12 lg:py-20 overflow-hidden border-b border-sand/40">
@@ -68,14 +83,14 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Hero Image Showcase / Branded Fallback */}
+          {/* Hero Image Showcase / Real Product Showcase */}
           <div className="lg:col-span-5 relative">
             <div className="relative aspect-[4/5] w-full max-w-md mx-auto rounded-2xl overflow-hidden shadow-artisan border-4 border-cream-surface">
-              {!imageError ? (
+              {heroImageUrl && !imageError ? (
                 <>
                   <Image
-                    src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=80"
-                    alt="SHREYANK CREATION handmade fabric bags and pouches"
+                    src={heroImageUrl}
+                    alt={`SHREYANK CREATION ${heroProductTitle}`}
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 40vw"
@@ -99,7 +114,7 @@ export function Hero() {
                   SHREYANK CREATION
                 </span>
                 <p className="font-serif text-sm font-semibold text-espresso">
-                  Handcrafted Bags, Pouches & Custom Accessories
+                  {heroProductTitle}
                 </p>
               </div>
             </div>

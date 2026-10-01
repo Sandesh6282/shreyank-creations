@@ -22,7 +22,7 @@ export function BestSellers({ products = [] }: BestSellersProps) {
             Featured Craft Creations
           </h2>
           <p className="text-sm text-taupe mt-2">
-            Handmade crafts and decorative items created by artisan hands.
+            Handmade bags, pouches, organizers, traditional creations, and gift sets crafted with care.
           </p>
         </div>
 

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { fetchStorefrontProducts, fetchDatabaseCategories } from "@/services/productService";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -12,6 +13,36 @@ interface CategoryPageProps {
 }
 
 export const revalidate = 60;
+
+export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
+  const { category: categorySlug } = await params;
+  const categories = await fetchDatabaseCategories();
+  const categoryInfo = categories.find((c) => c.slug === categorySlug);
+
+  const categoryName = categoryInfo ? categoryInfo.name : categorySlug;
+  const title = `${categoryName} | SHREYANK CREATION`;
+  const description =
+    categoryInfo?.description ||
+    `Explore ${categoryName} handmade creations at SHREYANK CREATION. Made with care and delivered across India.`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/shop/${categorySlug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: categorySlug } = await params;

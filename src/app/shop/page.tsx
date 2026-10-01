@@ -109,7 +109,7 @@ function ShopContent() {
             {currentCategoryName}
           </h1>
           <p className="text-sm text-taupe mt-1">
-            Handmade Indian crafts, decor, gifts, and folk paintings crafted with care.
+            Handmade fabric bags, utility pouches, organizers, traditional creations, and gift sets crafted with care by SHREYANK CREATION.
           </p>
         </div>
 

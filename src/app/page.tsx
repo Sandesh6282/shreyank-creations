@@ -18,24 +18,16 @@ export default async function HomePage() {
     fetchStorefrontProducts({ bestsellerOnly: true }),
   ]);
 
-  // Compute dynamic category counts from live database products
-  const categoryCounts: Record<string, number> = {};
-  for (const product of allProducts) {
-    if (product.categorySlug) {
-      categoryCounts[product.categorySlug] = (categoryCounts[product.categorySlug] || 0) + 1;
-    }
-  }
-
   return (
     <div className="space-y-0">
-      <Hero />
+      <Hero products={allProducts} />
       <FeaturedCategories />
       <FeaturedProducts products={featuredProducts} />
-      <BrandStory />
-      <EditorialBanner />
+      <BrandStory products={allProducts} />
+      <EditorialBanner products={allProducts} />
       <BestSellers products={bestsellerProducts} />
       <WhyChooseUs />
-      <SocialGallery />
+      <SocialGallery products={allProducts} />
       <Newsletter />
     </div>
   );

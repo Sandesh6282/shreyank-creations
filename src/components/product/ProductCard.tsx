@@ -19,7 +19,7 @@ interface ProductCardProps {
 }
 
 const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80";
+  "https://xqsryyvonzfcievpytmk.supabase.co/storage/v1/object/public/product-images/products/ng6fp4j_1790594168052.jpeg";
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();

@@ -7,17 +7,47 @@ import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://shreyankcreations.com";
+
 export const metadata: Metadata = {
-  title: "SHREYANK CREATION | Handmade Bags, Pouches & Custom Creations",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "SHREYANK CREATION | Handmade Bags, Pouches & Custom Creations",
+    template: "%s | SHREYANK CREATION",
+  },
   description:
-    "Discover SHREYANK CREATION for handmade fabric bags, utility pouches, organizers, bookmarks, and customized creations. Made with care and delivered across India.",
+    "SHREYANK CREATION offers handmade fabric bags, pouches, organizers, traditional creations, gift sets, and customized handmade products, with delivery across India and direct WhatsApp ordering.",
+  keywords: [
+    "SHREYANK CREATION",
+    "Handmade Bags",
+    "Pouches & Organizers",
+    "Traditional & Festive",
+    "Gift Sets",
+    "Customized Creations",
+    "Handmade Fabric Bags",
+    "WhatsApp Ordering",
+    "Handmade India",
+  ],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "SHREYANK CREATION | Handmade Bags, Pouches & Custom Accessories",
+    title: "SHREYANK CREATION | Handmade Bags, Pouches & Custom Creations",
     description:
-      "Handmade fabric bags, utility pouches, organizers, bookmarks, and bespoke custom creations ordered directly via WhatsApp.",
+      "SHREYANK CREATION offers handmade fabric bags, pouches, organizers, traditional creations, gift sets, and customized handmade products, with delivery across India and direct WhatsApp ordering.",
+    url: baseUrl,
     siteName: "SHREYANK CREATION",
     locale: "en_IN",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SHREYANK CREATION | Handmade Bags, Pouches & Custom Creations",
+    description:
+      "SHREYANK CREATION offers handmade fabric bags, pouches, organizers, traditional creations, gift sets, and customized handmade products, with delivery across India and direct WhatsApp ordering.",
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
 };
 
